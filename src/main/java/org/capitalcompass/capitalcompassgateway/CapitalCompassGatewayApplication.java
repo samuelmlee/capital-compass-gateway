@@ -10,4 +10,5 @@ public class CapitalCompassGatewayApplication {
         SpringApplication.run(CapitalCompassGatewayApplication.class, args);
     }
 
+
 }

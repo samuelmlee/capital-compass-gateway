@@ -1,0 +1,37 @@
+server:
+  port: 8082
+
+webapp:
+  url: ${WEBAPP_URL}
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: users-status
+          uri: lb://users
+          predicates:
+            - Path=/users/status
+            - Method=GET
+          filters:
+            - RemoveRequestHeader=Cookie
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8010/eureka
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+
+#logging:
+#  level:
+#    root: DEBUG
+
+# Okta Client
+okta:
+  oauth2:
+    issuer: https://${OKTA_DOMAIN}/
+    client-id: ${OKTA_CLIENT_ID}
+    client-secret: ${OKTA_CLIENT_SECRET}
