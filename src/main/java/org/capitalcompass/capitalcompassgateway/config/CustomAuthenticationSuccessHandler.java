@@ -20,6 +20,5 @@ public class CustomAuthenticationSuccessHandler implements ServerAuthenticationS
     @Override
     public Mono<Void> onAuthenticationSuccess(WebFilterExchange webFilterExchange, Authentication authentication) {
         return new DefaultServerRedirectStrategy().sendRedirect(webFilterExchange.getExchange(), URI.create(webAppUrl));
-
     }
 }

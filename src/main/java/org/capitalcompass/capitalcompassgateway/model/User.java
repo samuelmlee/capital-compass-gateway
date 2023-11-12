@@ -13,5 +13,6 @@ public class User {
     String username;
     String firstName;
     String lastName;
+    String email;
     List<String> roles;
 }
