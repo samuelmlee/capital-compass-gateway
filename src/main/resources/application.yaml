@@ -3,19 +3,26 @@ server:
 
 webapp:
   url: ${WEBAPP_URL}
-auth:
-  issuer: https://${OKTA_DOMAIN}/
-  client-id: ${OKTA_CLIENT_ID}
 
 spring:
   application:
     name: api-gateway
-  data:
-    redis:
-      host: localhost
-      port: 6379
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: capital-compass-gateway-client
+            client-secret: ${KEYCLOAK_GATEWAY_SECRET}
+            authorization-grant-type: authorization_code
+            scope: openid
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8080/realms/capitalcompass
   cloud:
     gateway:
+      default-filters:
+        - SaveSession
       httpclient:
         connect-timeout: 2000
         response-timeout: 5s
@@ -32,11 +39,13 @@ spring:
         filters:
           - RemoveRequestHeader=Cookie
 
-  session:
-    store-type: redis
-    timeout: 10m
-    redis:
-      namespace: capitalcompass:gateway
+
+
+#  session:
+#    store-type: redis
+#    timeout: 10m
+#    redis:
+#      namespace: capitalcompass:gateway
 #  redis:
 #    connect-timeout: 2s
 #    host: localhost
@@ -45,20 +54,16 @@ spring:
 
 
 
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8010/eureka
-  instance:
-    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://localhost:8010/eureka
+#  instance:
+#    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
 
 logging:
   level:
+    #    org.springframework.security: TRACE
     root: DEBUG
 
-# Okta Client
-okta:
-  oauth2:
-    issuer: ${auth.issuer}
-    client-id: ${auth.client-id}
-    client-secret: ${OKTA_CLIENT_SECRET}
+
