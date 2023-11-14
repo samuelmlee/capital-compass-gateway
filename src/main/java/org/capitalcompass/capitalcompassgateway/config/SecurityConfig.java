@@ -1,5 +1,6 @@
 package org.capitalcompass.capitalcompassgateway.config;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import java.util.Collections;
 
 
 @EnableWebFluxSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
     @Value("${webapp.url}")
@@ -26,7 +28,7 @@ public class SecurityConfig {
     SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http, ReactiveClientRegistrationRepository clientRegistrationRepository) {
         return http.cors().configurationSource(corsConfigurationSource()).and().csrf().disable()
                 .authorizeExchange(exchange -> exchange
-                        .pathMatchers("/users/*", "/api/logout").permitAll()
+                        .pathMatchers("/users/*").permitAll()
                         .anyExchange().authenticated()
                 )
                 .exceptionHandling(exceptionHandling -> exceptionHandling
