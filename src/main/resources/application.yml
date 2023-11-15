@@ -26,16 +26,21 @@ spring:
       httpclient:
         connect-timeout: 2000
         response-timeout: 5s
-    #    gateway:
-    #      discovery:
-    #        locator:
-    #          enabled: true
-    routes:
-      - id: users-status
-        uri: lb://users
-        predicates:
-          - Path=/users/status
-          - Method=GET
+      #    gateway:
+      #      discovery:
+      #        locator:
+      #          enabled: true
+      routes:
+        - id: users-status
+          uri: lb://users
+          predicates:
+            - Path=/users/status
+            - Method=GET
+        - id: stocks-status
+          uri: lb://stocks
+          predicates:
+            - Path=/stocks/status
+            - Method=GET
 
 
 
@@ -52,16 +57,16 @@ spring:
 
 
 
-    #eureka:
-    #  client:
-    #    service-url:
-    #      defaultZone: http://localhost:8010/eureka
-    #  instance:
-    #    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8010/eureka
+    instance:
+      instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
 
-    #logging:
-    #  level:
-    #    org.springframework.security: TRACE
+  #logging:
+  #  level:
+  #    org.springframework.security: TRACE
 #    root: DEBUG
 
 
