@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 public class UserController {
-
+    
     @GetMapping("user")
     public Mono<User> getUser(@AuthenticationPrincipal OidcUser oidcUser) {
         User currentUser = User.builder()
