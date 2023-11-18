@@ -26,7 +26,6 @@ spring:
       httpclient:
         connect-timeout: 2000
         response-timeout: 5s
-      #    gateway:
       #      discovery:
       #        locator:
       #          enabled: true
@@ -40,6 +39,11 @@ spring:
           uri: lb://stocks
           predicates:
             - Path=/stocks/status
+            - Method=GET
+        - id: stocks-tickers
+          uri: lb://stocks
+          predicates:
+            - Path=/stocks/tickers
             - Method=GET
 
 
