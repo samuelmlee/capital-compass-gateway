@@ -23,9 +23,9 @@ spring:
     gateway:
       default-filters:
         - SaveSession
-      httpclient:
-        connect-timeout: 2000
-        response-timeout: 5s
+      #      httpclient:
+      #        connect-timeout: 2000
+      #        response-timeout: 5s
       #      discovery:
       #        locator:
       #          enabled: true
@@ -44,6 +44,11 @@ spring:
           uri: lb://stocks
           predicates:
             - Path=/stocks/tickers
+            - Method=GET
+        - id: stocks-tickers-with-cursor
+          uri: lb://stocks
+          predicates:
+            - Path=/stocks/tickers/{cursor}
             - Method=GET
 
 

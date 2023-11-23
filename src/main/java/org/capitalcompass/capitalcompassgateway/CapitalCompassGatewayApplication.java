@@ -9,6 +9,4 @@ public class CapitalCompassGatewayApplication {
     public static void main(String[] args) {
         SpringApplication.run(CapitalCompassGatewayApplication.class, args);
     }
-
-
 }
