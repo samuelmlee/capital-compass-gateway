@@ -33,22 +33,17 @@ spring:
         - id: users-status
           uri: lb://users
           predicates:
-            - Path=/users/status
-            - Method=GET
-        - id: stocks-status
-          uri: lb://stocks
-          predicates:
-            - Path=/stocks/status
+            - Path=/v1/users/status
             - Method=GET
         - id: stocks-tickers
           uri: lb://stocks
           predicates:
-            - Path=/stocks/tickers
+            - Path=/v1/stocks/tickers
             - Method=GET
         - id: stocks-tickers-with-cursor
           uri: lb://stocks
           predicates:
-            - Path=/stocks/tickers/{cursor}
+            - Path=/v1/stocks/tickers/{cursor}
             - Method=GET
 
 management:
