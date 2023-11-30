@@ -28,7 +28,7 @@ public class SecurityConfig {
     SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
         return http.cors().configurationSource(corsConfigurationSource()).and().csrf().disable()
                 .authorizeExchange(exchange -> exchange
-                        .pathMatchers("/v1/users/*", "/v1/stocks/**", "/actuator/**").permitAll()
+                        .pathMatchers("/v1/users/**", "/v1/stocks/**", "/actuator/**").permitAll()
                         .anyExchange().authenticated()
                 )
                 .exceptionHandling(exceptionHandling -> exceptionHandling

@@ -8,12 +8,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
 public class UserController {
-    
+
     @GetMapping("user")
     public Mono<User> getUser(@AuthenticationPrincipal OidcUser oidcUser) {
         User currentUser = User.builder()
@@ -21,7 +19,7 @@ public class UserController {
                 .firstName(oidcUser.getGivenName())
                 .lastName(oidcUser.getFamilyName())
                 .email(oidcUser.getEmail())
-                .roles(List.of("Subscriber"))
+                .roles(oidcUser.getClaimAsStringList("roles"))
                 .build();
         return Mono.just(currentUser);
     }
