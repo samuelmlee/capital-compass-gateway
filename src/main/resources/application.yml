@@ -40,6 +40,11 @@ spring:
           predicates:
             - Path=/v1/users/watchlists
             - Method=GET
+        - id: users-create-watchlist
+          uri: lb://users
+          predicates:
+            - Path=/v1/users/watchlists
+            - Method=POST
         - id: stocks-tickers
           uri: lb://stocks
           predicates:
