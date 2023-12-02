@@ -4,6 +4,10 @@ server:
 webapp:
   url: ${WEBAPP_URL}
 
+services:
+  stocks:
+    url: "http://v1/stocks"
+
 spring:
   application:
     name: api-gateway
@@ -44,7 +48,17 @@ spring:
         - id: stocks-tickers-with-cursor
           uri: lb://stocks
           predicates:
-            - Path=/v1/stocks/tickers/{cursor}
+            - Path=/v1/stocks/tickers/cursor/{cursor}
+            - Method=GET
+        - id: stocks-tickers-types
+          uri: lb://stocks
+          predicates:
+            - Path=/v1/stocks/tickers/types
+            - Method=GET
+        - id: stocks-tickers-details
+          uri: lb://stocks
+          predicates:
+            - Path=/v1/stocks/tickers/details/{ticker}
             - Method=GET
 
 management:
