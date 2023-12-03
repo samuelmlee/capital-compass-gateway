@@ -1,21 +1,16 @@
 package org.capitalcompass.capitalcompassgateway.client;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Component
+@RequiredArgsConstructor
 public class StocksServiceClient {
 
-    private final WebClient webClient;
+    private final WebClient stocksWebClient;
 
-    @Autowired
-    public StocksServiceClient(@Qualifier("stocksWebClient") WebClient webClient) {
-        this.webClient = webClient;
-    }
-
-//    public Flux<Ticker> getBatchTickers() {
+//    public Flux<Ticker> getBatchTickers(List<String> tickerSymbols) {
 //
 //    }
 

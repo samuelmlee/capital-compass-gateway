@@ -1,13 +1,11 @@
 package org.capitalcompass.capitalcompassgateway.model;
 
 import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @Builder
 public class User {
     String username;
