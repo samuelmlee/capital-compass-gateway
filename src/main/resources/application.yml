@@ -23,7 +23,7 @@ spring:
         provider:
           keycloak:
             #            issuer-uri: http://localhost:8080/realms/capitalcompass
-            issuer-uri: https://auth.capitalcompass.org:8080/realms/capitalcompass
+            issuer-uri: https://auth.capitalcompass.org:8443/realms/capitalcompass
   cloud:
     gateway:
       default-filters:
