@@ -22,7 +22,9 @@ public class WatchlistService {
 
     public Flux<WatchlistWithSnapshot> getWatchListsWithSnapshots() {
         return this.usersServiceClient.getUserWatchlists()
-                .flatMap(this::updateWatchlistWithSnapshot);
+                .flatMap(watchlists -> {
+                    return this.updateWatchlistWithSnapshot(watchlists);
+                });
     }
 
     private Mono<WatchlistWithSnapshot> updateWatchlistWithSnapshot(Watchlist watchlist) {

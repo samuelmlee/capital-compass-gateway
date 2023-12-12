@@ -10,13 +10,13 @@ import reactor.core.publisher.Flux;
 @Component
 @RequiredArgsConstructor
 public class UsersServiceClient {
+    
+    private final WebClient.Builder webClientBuilder;
 
-    private final WebClient usersWebClient;
-
-    private String WATCHLIST_PATH = "/watchlists";
+    private String WATCHLIST_PATH = "http://users/v1/users/watchlists";
 
     public Flux<Watchlist> getUserWatchlists() {
-        return usersWebClient.get().uri(WATCHLIST_PATH)
+        return webClientBuilder.build().get().uri(WATCHLIST_PATH)
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve().bodyToFlux(Watchlist.class);
     }

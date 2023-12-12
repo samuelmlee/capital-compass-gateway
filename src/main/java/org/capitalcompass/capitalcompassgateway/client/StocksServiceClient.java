@@ -15,9 +15,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StocksServiceClient {
 
-    private final WebClient stocksWebClient;
+    private final WebClient.Builder webClientBuilder;
 
-    private String TICKERS_SNAPSHOT_PATH = "/market/snapshot/tickers";
+    private String TICKERS_SNAPSHOT_PATH = "http://stocks/v1/stocks/market/snapshot/tickers";
 
     public Flux<TickerSnapshot> getBatchTickerSnapShot(List<String> tickerSymbols) {
         return Flux.fromIterable(tickerSymbols)
@@ -27,7 +27,7 @@ public class StocksServiceClient {
     }
 
     public Mono<TickerSnapshotResponse> getTickerSnapShot(String tickerSymbol) {
-        return stocksWebClient.get().uri(TICKERS_SNAPSHOT_PATH + "/{symbol}", tickerSymbol)
+        return webClientBuilder.build().get().uri(TICKERS_SNAPSHOT_PATH + "/{symbol}", tickerSymbol)
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve().bodyToMono(TickerSnapshotResponse.class);
     }

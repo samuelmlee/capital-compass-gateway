@@ -6,9 +6,9 @@ webapp:
 
 services:
   users:
-    url: "http://v1/users"
+    url: "http://users"
   stocks:
-    url: "http://v1/stocks"
+    url: "http://stocks"
 
 spring:
   application:
@@ -37,11 +37,6 @@ spring:
       #        locator:
       #          enabled: true
       routes:
-        - id: users-watchlist
-          uri: lb://users
-          predicates:
-            - Path=/v1/users/watchlists
-            - Method=GET
         - id: users-create-watchlist
           uri: lb://users
           predicates:
@@ -67,11 +62,11 @@ spring:
           predicates:
             - Path=/v1/stocks/reference/tickers/details/{ticker}
             - Method=GET
-        - id: stocks-tickers-snapshot
-          uri: lb://stocks
-          predicates:
-            - Path=/v1/stocks/market/snapshot/tickers/{ticker}
-            - Method=GET
+#        - id: stocks-tickers-snapshot
+#          uri: lb://stocks
+#          predicates:
+#            - Path=/v1/stocks/market/snapshot/tickers/{ticker}
+#            - Method=GET
 
 management:
   endpoints:
