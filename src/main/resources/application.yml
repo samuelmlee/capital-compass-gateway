@@ -5,6 +5,8 @@ webapp:
   url: ${WEBAPP_URL}
 
 services:
+  users:
+    url: "http://v1/users"
   stocks:
     url: "http://v1/stocks"
 
@@ -22,7 +24,6 @@ spring:
             scope: openid, roles
         provider:
           keycloak:
-            #            issuer-uri: http://localhost:8080/realms/capitalcompass
             issuer-uri: https://auth.capitalcompass.org:8443/realms/capitalcompass
   cloud:
     gateway:
