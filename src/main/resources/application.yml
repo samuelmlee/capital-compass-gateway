@@ -49,22 +49,27 @@ spring:
         - id: stocks-tickers
           uri: lb://stocks
           predicates:
-            - Path=/v1/stocks/tickers
+            - Path=/v1/stocks/reference/tickers
             - Method=GET
         - id: stocks-tickers-with-cursor
           uri: lb://stocks
           predicates:
-            - Path=/v1/stocks/tickers/cursor/{cursor}
+            - Path=/v1/stocks/reference/tickers/cursor/{cursor}
             - Method=GET
         - id: stocks-tickers-types
           uri: lb://stocks
           predicates:
-            - Path=/v1/stocks/tickers/types
+            - Path=/v1/stocks/reference/tickers/types
             - Method=GET
         - id: stocks-tickers-details
           uri: lb://stocks
           predicates:
-            - Path=/v1/stocks/tickers/details/{ticker}
+            - Path=/v1/stocks/reference/tickers/details/{ticker}
+            - Method=GET
+        - id: stocks-tickers-snapshot
+          uri: lb://stocks
+          predicates:
+            - Path=/v1/stocks/market/snapshot/tickers/{ticker}
             - Method=GET
 
 management:
