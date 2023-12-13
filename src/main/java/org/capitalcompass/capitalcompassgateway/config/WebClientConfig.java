@@ -4,11 +4,9 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpHeaders;
-import org.springframework.security.core.context.ReactiveSecurityContextHolder;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.core.oidc.user.OidcUser;
-import org.springframework.web.reactive.function.client.ClientRequest;
+import org.springframework.security.oauth2.client.registration.ReactiveClientRegistrationRepository;
+import org.springframework.security.oauth2.client.web.reactive.function.client.ServerOAuth2AuthorizedClientExchangeFilterFunction;
+import org.springframework.security.oauth2.client.web.server.ServerOAuth2AuthorizedClientRepository;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -16,32 +14,19 @@ import reactor.core.publisher.Mono;
 @Configuration
 @Log4j2
 public class WebClientConfig {
-
-
+    
     @Bean
     @LoadBalanced
-    public WebClient.Builder webClientBuilder() {
+    WebClient.Builder webClientBuilder(ReactiveClientRegistrationRepository clientRegistrations,
+                                       ServerOAuth2AuthorizedClientRepository authorizedClients) {
+        // explicitly opt into using the oauth2Login to provide an access token implicitly
+        ServerOAuth2AuthorizedClientExchangeFilterFunction oauth =
+                new ServerOAuth2AuthorizedClientExchangeFilterFunction(clientRegistrations, authorizedClients);
+        oauth.setDefaultOAuth2AuthorizedClient(true);
+
         return WebClient.builder()
-                .filters(exchangeFilterFunctions -> {
-                    exchangeFilterFunctions.add(logRequest());
-                })
-                .filter(setJWT());
-    }
-
-    private ExchangeFilterFunction setJWT() {
-        return ExchangeFilterFunction.ofRequestProcessor((clientRequest) ->
-                ReactiveSecurityContextHolder.getContext()
-                        .map(securityContext -> {
-                            OAuth2AuthenticationToken oauthToken = (OAuth2AuthenticationToken) securityContext.getAuthentication();
-                            OidcUser oidcUser = (OidcUser) oauthToken.getPrincipal();
-
-                            String jwtToken = oidcUser.getIdToken().getTokenValue();
-
-                            return ClientRequest.from(clientRequest)
-                                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken)
-                                    .build();
-                        })
-        );
+                .filters(exchangeFilterFunctions -> exchangeFilterFunctions.add(logRequest()))
+                .filter(oauth);
     }
 
     ExchangeFilterFunction logRequest() {
