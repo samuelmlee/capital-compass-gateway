@@ -9,8 +9,12 @@ import org.capitalcompass.capitalcompassgateway.model.WatchlistWithSnapshot;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,16 +25,22 @@ public class WatchlistService {
     private final StocksServiceClient stocksServiceClient;
 
     public Flux<WatchlistWithSnapshot> getWatchListsWithSnapshots() {
-        return this.usersServiceClient.getUserWatchlists()
-                .flatMap(watchlists -> {
-                    return this.updateWatchlistWithSnapshot(watchlists);
-                });
+        Mono<Map<String, TickerSnapshot>> allSnapshotsMapMono = stocksServiceClient.getAllTickerSnapshots()
+                .collectMap(TickerSnapshot::getTicker);
+        
+        return usersServiceClient.getUserWatchlists()
+                .flatMap(watchlist -> allSnapshotsMapMono
+                        .map(allSnapshotsMap -> mapToWatchlistWithSnapshot(watchlist, allSnapshotsMap)))
+                .subscribeOn(Schedulers.parallel());
     }
 
-    private Mono<WatchlistWithSnapshot> updateWatchlistWithSnapshot(Watchlist watchlist) {
-        return stocksServiceClient.getBatchTickerSnapShot(watchlist.getTickers())
-                .collectList()
-                .map(tickerSnapshots -> buildWatchlistWithSnapshot(watchlist, tickerSnapshots));
+    private WatchlistWithSnapshot mapToWatchlistWithSnapshot(Watchlist watchlist, Map<String, TickerSnapshot> allSnapshotsMap) {
+        List<TickerSnapshot> matchedSnapshots = watchlist.getTickers().stream()
+                .map(allSnapshotsMap::get)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+
+        return buildWatchlistWithSnapshot(watchlist, matchedSnapshots);
     }
 
     private WatchlistWithSnapshot buildWatchlistWithSnapshot(Watchlist watchlist, List<TickerSnapshot> tickerSnapshots) {

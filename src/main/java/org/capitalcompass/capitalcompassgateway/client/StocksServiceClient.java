@@ -9,8 +9,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
-
 @Component
 @RequiredArgsConstructor
 public class StocksServiceClient {
@@ -19,17 +17,16 @@ public class StocksServiceClient {
 
     private String TICKERS_SNAPSHOT_PATH = "http://stocks/v1/stocks/market/snapshot/tickers";
 
-    public Flux<TickerSnapshot> getBatchTickerSnapShot(List<String> tickerSymbols) {
-        return Flux.fromIterable(tickerSymbols)
-                .flatMap(symbol ->
-                        getTickerSnapShot(symbol).map(TickerSnapshotResponse::getTicker)
-                );
-    }
-
     public Mono<TickerSnapshotResponse> getTickerSnapShot(String tickerSymbol) {
         return webClientBuilder.build().get().uri(TICKERS_SNAPSHOT_PATH + "/{symbol}", tickerSymbol)
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve().bodyToMono(TickerSnapshotResponse.class);
+    }
+
+    public Flux<TickerSnapshot> getAllTickerSnapshots() {
+        return webClientBuilder.build().get().uri(TICKERS_SNAPSHOT_PATH)
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve().bodyToFlux(TickerSnapshot.class);
     }
 
 
