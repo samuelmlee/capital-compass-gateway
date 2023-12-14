@@ -9,11 +9,9 @@ import org.capitalcompass.capitalcompassgateway.model.WatchlistWithSnapshot;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,17 +25,15 @@ public class WatchlistService {
     public Flux<WatchlistWithSnapshot> getWatchListsWithSnapshots() {
         Mono<Map<String, TickerSnapshot>> allSnapshotsMapMono = stocksServiceClient.getAllTickerSnapshots()
                 .collectMap(TickerSnapshot::getTicker);
-        
+
         return usersServiceClient.getUserWatchlists()
                 .flatMap(watchlist -> allSnapshotsMapMono
-                        .map(allSnapshotsMap -> mapToWatchlistWithSnapshot(watchlist, allSnapshotsMap)))
-                .subscribeOn(Schedulers.parallel());
+                        .map(allSnapshotsMap -> mapToWatchlistWithSnapshot(watchlist, allSnapshotsMap)));
     }
 
     private WatchlistWithSnapshot mapToWatchlistWithSnapshot(Watchlist watchlist, Map<String, TickerSnapshot> allSnapshotsMap) {
         List<TickerSnapshot> matchedSnapshots = watchlist.getTickers().stream()
-                .map(allSnapshotsMap::get)
-                .filter(Objects::nonNull)
+                .map(ticker -> allSnapshotsMap.getOrDefault(ticker, getDefaultSnapshot(ticker)))
                 .collect(Collectors.toList());
 
         return buildWatchlistWithSnapshot(watchlist, matchedSnapshots);
@@ -53,5 +49,7 @@ public class WatchlistService {
                 .build();
     }
 
-
+    private TickerSnapshot getDefaultSnapshot(String ticker) {
+        return new TickerSnapshot(ticker);
+    }
 }
