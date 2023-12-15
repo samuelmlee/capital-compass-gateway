@@ -24,7 +24,7 @@ public class WatchlistService {
 
     public Flux<WatchlistWithSnapshot> getWatchListsWithSnapshots() {
         Mono<Map<String, TickerSnapshot>> allSnapshotsMapMono = stocksServiceClient.getAllTickerSnapshots()
-                .collectMap(TickerSnapshot::getTicker);
+                .collectMap(TickerSnapshot::getSymbol);
 
         return usersServiceClient.getUserWatchlists()
                 .flatMap(watchlist -> allSnapshotsMapMono

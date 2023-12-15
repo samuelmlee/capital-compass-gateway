@@ -8,11 +8,11 @@ import lombok.NoArgsConstructor;
 public class TickerSnapshot {
 
     private Long updated;
-    private String ticker;
+    private String symbol;
     private DailyBar day;
     private DailyBar prevDay;
 
-    public TickerSnapshot(String ticker) {
-        this.ticker = ticker;
+    public TickerSnapshot(String symbol) {
+        this.symbol = symbol;
     }
 }
