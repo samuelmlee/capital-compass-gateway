@@ -13,5 +13,5 @@ public class Watchlist {
     private String name;
     private Date creationDate;
     private Date lastUpdateDate;
-    private List<String> tickers;
+    private List<WatchlistTicker> tickers;
 }

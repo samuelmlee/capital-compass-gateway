@@ -1,10 +1,12 @@
 package org.capitalcompass.capitalcompassgateway.service;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang.SerializationUtils;
 import org.capitalcompass.capitalcompassgateway.client.StocksServiceClient;
 import org.capitalcompass.capitalcompassgateway.client.UsersServiceClient;
 import org.capitalcompass.capitalcompassgateway.model.TickerSnapshot;
 import org.capitalcompass.capitalcompassgateway.model.Watchlist;
+import org.capitalcompass.capitalcompassgateway.model.WatchlistTicker;
 import org.capitalcompass.capitalcompassgateway.model.WatchlistWithSnapshot;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -33,10 +35,19 @@ public class WatchlistService {
 
     private WatchlistWithSnapshot mapToWatchlistWithSnapshot(Watchlist watchlist, Map<String, TickerSnapshot> allSnapshotsMap) {
         List<TickerSnapshot> matchedSnapshots = watchlist.getTickers().stream()
-                .map(ticker -> allSnapshotsMap.getOrDefault(ticker, getDefaultSnapshot(ticker)))
+                .map(ticker -> mapSnapShotToTicker(allSnapshotsMap, ticker))
                 .collect(Collectors.toList());
 
         return buildWatchlistWithSnapshot(watchlist, matchedSnapshots);
+    }
+
+    private TickerSnapshot mapSnapShotToTicker(Map<String, TickerSnapshot> allSnapshotsMap, WatchlistTicker watchlistTicker) {
+        TickerSnapshot snapshotFound = allSnapshotsMap
+                .getOrDefault(watchlistTicker.getSymbol(), getDefaultSnapshot(watchlistTicker));
+        TickerSnapshot snapshotCopy = (TickerSnapshot) SerializationUtils.clone(snapshotFound);
+
+        snapshotCopy.setName(watchlistTicker.getName());
+        return snapshotCopy;
     }
 
     private WatchlistWithSnapshot buildWatchlistWithSnapshot(Watchlist watchlist, List<TickerSnapshot> tickerSnapshots) {
@@ -49,7 +60,10 @@ public class WatchlistService {
                 .build();
     }
 
-    private TickerSnapshot getDefaultSnapshot(String ticker) {
-        return new TickerSnapshot(ticker);
+    private TickerSnapshot getDefaultSnapshot(WatchlistTicker ticker) {
+        return TickerSnapshot.builder()
+                .symbol(ticker.getSymbol())
+                .name(ticker.getName())
+                .build();
     }
 }
