@@ -1,13 +1,9 @@
 package org.capitalcompass.capitalcompassgateway.service;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang.SerializationUtils;
 import org.capitalcompass.capitalcompassgateway.client.StocksServiceClient;
 import org.capitalcompass.capitalcompassgateway.client.UsersServiceClient;
-import org.capitalcompass.capitalcompassgateway.model.TickerSnapshot;
-import org.capitalcompass.capitalcompassgateway.model.Watchlist;
-import org.capitalcompass.capitalcompassgateway.model.WatchlistTicker;
-import org.capitalcompass.capitalcompassgateway.model.WatchlistWithSnapshot;
+import org.capitalcompass.capitalcompassgateway.model.*;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -24,7 +20,7 @@ public class WatchlistService {
 
     private final StocksServiceClient stocksServiceClient;
 
-    public Flux<WatchlistWithSnapshot> getWatchListsWithSnapshots() {
+    public Flux<WatchlistDTO> getWatchListsWithSnapshots() {
         Mono<Map<String, TickerSnapshot>> allSnapshotsMapMono = stocksServiceClient.getAllTickerSnapshots()
                 .collectMap(TickerSnapshot::getSymbol);
 
@@ -33,25 +29,36 @@ public class WatchlistService {
                         .map(allSnapshotsMap -> mapToWatchlistWithSnapshot(watchlist, allSnapshotsMap)));
     }
 
-    private WatchlistWithSnapshot mapToWatchlistWithSnapshot(Watchlist watchlist, Map<String, TickerSnapshot> allSnapshotsMap) {
-        List<TickerSnapshot> matchedSnapshots = watchlist.getTickers().stream()
+    private WatchlistDTO mapToWatchlistWithSnapshot(Watchlist watchlist, Map<String, TickerSnapshot> allSnapshotsMap) {
+        List<TickerSnapshotDTO> matchedSnapshots = watchlist.getTickers().stream()
                 .map(ticker -> mapSnapShotToTicker(allSnapshotsMap, ticker))
                 .collect(Collectors.toList());
 
         return buildWatchlistWithSnapshot(watchlist, matchedSnapshots);
     }
 
-    private TickerSnapshot mapSnapShotToTicker(Map<String, TickerSnapshot> allSnapshotsMap, WatchlistTicker watchlistTicker) {
-        TickerSnapshot snapshotFound = allSnapshotsMap
-                .getOrDefault(watchlistTicker.getSymbol(), getDefaultSnapshot(watchlistTicker));
-        TickerSnapshot snapshotCopy = (TickerSnapshot) SerializationUtils.clone(snapshotFound);
+    private TickerSnapshotDTO mapSnapShotToTicker(Map<String, TickerSnapshot> allSnapshotsMap, WatchlistTicker watchlistTicker) {
+        TickerSnapshot snapshotFound = allSnapshotsMap.get(watchlistTicker.getSymbol());
 
-        snapshotCopy.setName(watchlistTicker.getName());
-        return snapshotCopy;
+        if (snapshotFound == null) {
+            return getDefaultSnapshotDTO(watchlistTicker);
+        }
+
+        return buildTickerSnapshotDTO(snapshotFound, watchlistTicker);
     }
 
-    private WatchlistWithSnapshot buildWatchlistWithSnapshot(Watchlist watchlist, List<TickerSnapshot> tickerSnapshots) {
-        return WatchlistWithSnapshot.builder()
+    private TickerSnapshotDTO buildTickerSnapshotDTO(TickerSnapshot snapshot, WatchlistTicker watchlistTicker) {
+        return TickerSnapshotDTO.builder()
+                .symbol(snapshot.getSymbol())
+                .name(watchlistTicker.getName())
+                .updated(snapshot.getUpdated())
+                .day(snapshot.getDay())
+                .prevDay(snapshot.getPrevDay())
+                .build();
+    }
+
+    private WatchlistDTO buildWatchlistWithSnapshot(Watchlist watchlist, List<TickerSnapshotDTO> tickerSnapshots) {
+        return WatchlistDTO.builder()
                 .id(watchlist.getId())
                 .name(watchlist.getName())
                 .creationDate(watchlist.getCreationDate())
@@ -60,8 +67,8 @@ public class WatchlistService {
                 .build();
     }
 
-    private TickerSnapshot getDefaultSnapshot(WatchlistTicker ticker) {
-        return TickerSnapshot.builder()
+    private TickerSnapshotDTO getDefaultSnapshotDTO(WatchlistTicker ticker) {
+        return TickerSnapshotDTO.builder()
                 .symbol(ticker.getSymbol())
                 .name(ticker.getName())
                 .build();

@@ -8,11 +8,11 @@ import java.util.List;
 
 @Data
 @Builder
-public class WatchlistWithSnapshot {
+public class WatchlistDTO {
 
     private Long id;
     private String name;
     private Date creationDate;
     private Date lastUpdateDate;
-    private List<TickerSnapshot> tickerSnapshots;
+    private List<TickerSnapshotDTO> tickerSnapshots;
 }

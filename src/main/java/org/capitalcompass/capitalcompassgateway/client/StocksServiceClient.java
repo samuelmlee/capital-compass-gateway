@@ -2,7 +2,6 @@ package org.capitalcompass.capitalcompassgateway.client;
 
 import lombok.RequiredArgsConstructor;
 import org.capitalcompass.capitalcompassgateway.model.TickerSnapshot;
-import org.capitalcompass.capitalcompassgateway.model.TickerSnapshotResponse;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -17,10 +16,10 @@ public class StocksServiceClient {
 
     private String TICKERS_SNAPSHOT_PATH = "http://stocks/v1/stocks/market/snapshot/tickers";
 
-    public Mono<TickerSnapshotResponse> getTickerSnapShot(String tickerSymbol) {
+    public Mono<TickerSnapshot> getTickerSnapShot(String tickerSymbol) {
         return webClientBuilder.build().get().uri(TICKERS_SNAPSHOT_PATH + "/{symbol}", tickerSymbol)
                 .accept(MediaType.APPLICATION_JSON)
-                .retrieve().bodyToMono(TickerSnapshotResponse.class);
+                .retrieve().bodyToMono(TickerSnapshot.class);
     }
 
     public Flux<TickerSnapshot> getAllTickerSnapshots() {
