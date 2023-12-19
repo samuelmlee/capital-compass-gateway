@@ -32,8 +32,9 @@ public class StocksServiceClient {
     }
 
     public Mono<TickerSnapshotMapDTO> getBatchTickerSnapShots(Set<String> tickerSymbols) {
-        return webClientBuilder.build().post().uri(TICKERS_SNAPSHOT_PATH + "/batch", tickerSymbols)
+        return webClientBuilder.build().post().uri(TICKERS_SNAPSHOT_PATH + "/batch")
                 .accept(MediaType.APPLICATION_JSON)
+                .bodyValue(tickerSymbols)
                 .retrieve().bodyToMono(TickerSnapshotMapDTO.class);
     }
 
