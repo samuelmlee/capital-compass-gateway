@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -30,6 +31,9 @@ public class WatchlistService {
     }
 
     private WatchlistDTO mapToWatchlistWithSnapshot(Watchlist watchlist, Map<String, TickerSnapshot> allSnapshotsMap) {
+        if (watchlist.getTickers() == null || watchlist.getTickers().isEmpty()) {
+            return buildWatchlistWithSnapshot(watchlist, new ArrayList<>());
+        }
         List<TickerSnapshotDTO> matchedSnapshots = watchlist.getTickers().stream()
                 .map(ticker -> mapSnapShotToTicker(allSnapshotsMap, ticker))
                 .collect(Collectors.toList());
@@ -50,7 +54,7 @@ public class WatchlistService {
     private TickerSnapshotDTO buildTickerSnapshotDTO(TickerSnapshot snapshot, WatchlistTicker watchlistTicker) {
         return TickerSnapshotDTO.builder()
                 .symbol(snapshot.getSymbol())
-                .name(watchlistTicker.getName())
+                .name(snapshot.getName())
                 .updated(snapshot.getUpdated())
                 .day(snapshot.getDay())
                 .prevDay(snapshot.getPrevDay())
@@ -70,7 +74,6 @@ public class WatchlistService {
     private TickerSnapshotDTO getDefaultSnapshotDTO(WatchlistTicker ticker) {
         return TickerSnapshotDTO.builder()
                 .symbol(ticker.getSymbol())
-                .name(ticker.getName())
                 .build();
     }
 }

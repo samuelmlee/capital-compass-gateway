@@ -13,6 +13,7 @@ public class TickerSnapshot {
 
     private Long updated;
     private String symbol;
+    private String name;
     private DailyBar day;
     private DailyBar prevDay;
 
