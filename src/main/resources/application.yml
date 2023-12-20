@@ -47,6 +47,11 @@ spring:
           predicates:
             - Path=/v1/users/watchlists
             - Method=PUT
+        - id: users-delete-watchlist
+          uri: lb://users
+          predicates:
+            - Path=/v1/users/watchlists/{watchlistId}
+            - Method=DELETE
         - id: stocks-tickers
           uri: lb://stocks
           predicates:
