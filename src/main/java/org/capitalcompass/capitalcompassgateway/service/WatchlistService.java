@@ -24,20 +24,31 @@ public class WatchlistService {
 
     private final StocksServiceClient stocksServiceClient;
 
+    private static Set<String> getWatchlistSymbols(Watchlist watchlist) {
+        Set<String> watchlistSymbols = watchlist.getTickers().stream()
+                .map(WatchlistTicker::getSymbol).collect(Collectors.toSet());
+        return watchlistSymbols;
+    }
+
+    private static Set<String> getAllWatchlistsSymbols(List<Watchlist> watchlists) {
+        Set<String> allTickerSymbols = watchlists.stream()
+                .flatMap(watchlist -> watchlist.getTickers().stream())
+                .map(WatchlistTicker::getSymbol).collect(Collectors.toSet());
+        return allTickerSymbols;
+    }
+
     public Flux<WatchlistDTO> getWatchListsWithSnapshots() {
         return usersServiceClient.getUserWatchlists().collectList().flatMapMany(watchlists -> {
 
-            Set<String> tickerSymbols = watchlists.stream()
-                    .flatMap(watchlist -> watchlist.getTickers().stream())
-                    .map(WatchlistTicker::getSymbol).collect(Collectors.toSet());
+            Set<String> allTickerSymbols = getAllWatchlistsSymbols(watchlists);
 
-            return stocksServiceClient.getBatchTickerSnapShots(tickerSymbols).flatMapMany(snapshotsMap -> {
-                List<TickerSnapshotDTO> snapshots = getSnapshotsWithWatchlist(tickerSymbols, snapshotsMap);
+            return stocksServiceClient.getBatchTickerSnapShots(allTickerSymbols).flatMapMany(snapshotsMap ->
+                    Flux.fromIterable(watchlists).flatMap(watchlist -> {
+                        Set<String> watchlistSymbols = getWatchlistSymbols(watchlist);
+                        List<TickerSnapshotDTO> snapshots = getSnapshotsWithWatchlist(watchlistSymbols, snapshotsMap);
 
-                return Flux.fromIterable(watchlists).flatMap(watchlist ->
-                        buildWatchlistWithSnapshot(watchlist, snapshots)
-                );
-            });
+                        return buildWatchlistWithSnapshot(watchlist, snapshots);
+                    }));
         });
     }
 
