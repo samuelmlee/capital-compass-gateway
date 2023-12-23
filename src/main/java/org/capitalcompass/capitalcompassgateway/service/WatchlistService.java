@@ -25,16 +25,14 @@ public class WatchlistService {
     private final StocksServiceClient stocksServiceClient;
 
     private static Set<String> getWatchlistSymbols(Watchlist watchlist) {
-        Set<String> watchlistSymbols = watchlist.getTickers().stream()
+        return watchlist.getTickers().stream()
                 .map(WatchlistTicker::getSymbol).collect(Collectors.toSet());
-        return watchlistSymbols;
     }
 
     private static Set<String> getAllWatchlistsSymbols(List<Watchlist> watchlists) {
-        Set<String> allTickerSymbols = watchlists.stream()
+        return watchlists.stream()
                 .flatMap(watchlist -> watchlist.getTickers().stream())
                 .map(WatchlistTicker::getSymbol).collect(Collectors.toSet());
-        return allTickerSymbols;
     }
 
     public Flux<WatchlistDTO> getWatchListsWithSnapshots() {
