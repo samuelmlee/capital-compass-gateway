@@ -24,23 +24,12 @@ public class WatchlistService {
 
     private final StocksServiceClient stocksServiceClient;
 
-    private static Set<String> getWatchlistSymbols(Watchlist watchlist) {
-        return watchlist.getTickers().stream()
-                .map(WatchlistTicker::getSymbol).collect(Collectors.toSet());
-    }
-
-    private static Set<String> getAllWatchlistsSymbols(List<Watchlist> watchlists) {
-        return watchlists.stream()
-                .flatMap(watchlist -> watchlist.getTickers().stream())
-                .map(WatchlistTicker::getSymbol).collect(Collectors.toSet());
-    }
-
     public Flux<WatchlistDTO> getWatchListsWithSnapshots() {
         return usersServiceClient.getUserWatchlists().collectList().flatMapMany(watchlists -> {
 
             Set<String> allTickerSymbols = getAllWatchlistsSymbols(watchlists);
 
-            return stocksServiceClient.getBatchTickerSnapShots(allTickerSymbols).flatMapMany(snapshotsMap ->
+            return stocksServiceClient.getTickerSnapShotMap(allTickerSymbols).flatMapMany(snapshotsMap ->
                     Flux.fromIterable(watchlists).flatMap(watchlist -> {
                         Set<String> watchlistSymbols = getWatchlistSymbols(watchlist);
                         List<TickerSnapshotDTO> snapshots = getSnapshotsWithWatchlist(watchlistSymbols, snapshotsMap);
@@ -66,5 +55,16 @@ public class WatchlistService {
             Set<String> tickerSymbols, TickerSnapshotMapDTO snapshotMapDTO) {
         return tickerSymbols.stream().map(symbol ->
                 snapshotMapDTO.getTickers().get(symbol)).collect(Collectors.toList());
+    }
+
+    private Set<String> getWatchlistSymbols(Watchlist watchlist) {
+        return watchlist.getTickers().stream()
+                .map(WatchlistTicker::getSymbol).collect(Collectors.toSet());
+    }
+
+    private Set<String> getAllWatchlistsSymbols(List<Watchlist> watchlists) {
+        return watchlists.stream()
+                .flatMap(watchlist -> watchlist.getTickers().stream())
+                .map(WatchlistTicker::getSymbol).collect(Collectors.toSet());
     }
 }

@@ -19,16 +19,16 @@ public class StocksServiceClient {
 
     private String TICKERS_SNAPSHOT_PATH = "http://stocks/v1/stocks/market/snapshot/tickers";
 
-    public Mono<TickerSnapshotMapDTO> getBatchTickerSnapShots(Set<String> tickerSymbols) {
-        return webClientBuilder.build().post().uri(TICKERS_SNAPSHOT_PATH + "/batch")
+    public Mono<TickerSnapshotMapDTO> getTickerSnapShotMap(Set<String> tickerSymbols) {
+        return webClientBuilder.build().post().uri(TICKERS_SNAPSHOT_PATH + "/map")
                 .accept(MediaType.APPLICATION_JSON)
                 .bodyValue(tickerSymbols)
                 .retrieve().bodyToMono(TickerSnapshotMapDTO.class)
                 .onErrorResume(WebClientResponseException.class, ex ->
-                        Mono.error(new StocksClientErrorException("WebClientResponseException occurred getting Batch Ticker Snapshots : " + ex.getMessage()))
+                        Mono.error(new StocksClientErrorException("WebClientResponseException occurred getting Ticker Snapshot Map : " + ex.getMessage()))
                 )
                 .onErrorResume(Exception.class, ex ->
-                        Mono.error(new StocksClientErrorException("A network error occurred getting Batch Ticker Snapshots : " + ex.getMessage()))
+                        Mono.error(new StocksClientErrorException("A network error occurred getting Ticker Snapshot Map : " + ex.getMessage()))
                 );
     }
 
