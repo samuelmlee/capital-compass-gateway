@@ -72,11 +72,6 @@ spring:
           predicates:
             - Path=/v1/stocks/reference/tickers/details/{ticker}
             - Method=GET
-#        - id: stocks-tickers-snapshot
-#          uri: lb://stocks
-#          predicates:
-#            - Path=/v1/stocks/market/snapshot/tickers/{ticker}
-#            - Method=GET
 
 management:
   endpoints:
