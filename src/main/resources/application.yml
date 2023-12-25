@@ -13,13 +13,15 @@ services:
 spring:
   application:
     name: api-gateway
+  profiles:
+    active: deploy
   security:
     oauth2:
       client:
         registration:
           keycloak:
             client-id: capital-compass-gateway-client
-            client-secret: ${KEYCLOAK_GATEWAY_SECRET}
+            client-secret: ${keycloak.gateway.secret}
             authorization-grant-type: authorization_code
             scope: openid, roles
         provider:
