@@ -1,43 +1,27 @@
-server:
-  port: 8082
-
-webapp:
-  url: ${WEBAPP_URL}
-
-services:
-  users:
-    url: "http://users"
-  stocks:
-    url: "http://stocks"
-
 spring:
   application:
     name: api-gateway
-  profiles:
-    active: deploy
+  config:
+    import:
+      - aws-secretsmanager:/secret/api-gateway/
+      - aws-parameterstore:/config/api-gateway/
   security:
     oauth2:
       client:
         registration:
           keycloak:
             client-id: capital-compass-gateway-client
-            client-secret: ${keycloak.gateway.secret}
+            client-secret: ${keycloak.client.secret}
             authorization-grant-type: authorization_code
             scope: openid, roles
         provider:
           keycloak:
-            issuer-uri: https://auth.capitalcompass.org:8443/realms/capitalcompass
+            issuer-uri: ${keycloak.issuer.uri}
   cloud:
     gateway:
       default-filters:
         - SaveSession
         - TokenRelay
-      #      httpclient:
-      #        connect-timeout: 2000
-      #        response-timeout: 5s
-      #      discovery:
-      #        locator:
-      #          enabled: true
       routes:
         - id: users-create-watchlist
           uri: lb://users
@@ -92,12 +76,10 @@ management:
     #    port: 6379
     #    timeout: 1s
 
-
-
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8010/eureka
+      defaultZone: ${eureka.default.zone}
     instance:
       instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
 
