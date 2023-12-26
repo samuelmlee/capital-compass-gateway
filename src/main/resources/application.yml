@@ -5,6 +5,7 @@ spring:
     import:
       - aws-secretsmanager:/secret/api-gateway/
       - aws-parameterstore:/config/api-gateway/
+      - aws-parameterstore:/config/application/
   security:
     oauth2:
       client:
