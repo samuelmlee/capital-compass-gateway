@@ -1,0 +1,12 @@
+services:
+  eureka-server:
+    image: samuelmlee/capitalcompass-eureka:v0.1
+    ports:
+      - "8010:8010"
+  users:
+    image: samuelmlee/capitalcompass-users:v0.1
+    volumes:
+      - ~/.aws:~/.aws
+    ports:
+      - "8085:8085"
+
