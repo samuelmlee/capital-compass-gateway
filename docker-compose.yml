@@ -9,16 +9,22 @@ services:
       - C:/Users/sam_m/.aws:/home/cnb/.aws:ro
     ports:
       - "8085:8085"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
   stocks:
     image: samuelmlee/capitalcompass-stocks:v0.1
     volumes:
       - C:/Users/sam_m/.aws:/home/cnb/.aws:ro
     ports:
       - "8083:8083"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
   gateway:
     image: samuelmlee/capitalcompass-gateway:v0.1
     volumes:
       - C:/Users/sam_m/.aws:/home/cnb/.aws:ro
     ports:
       - "8082:8082"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
 
