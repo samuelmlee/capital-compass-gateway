@@ -6,7 +6,7 @@ services:
   users:
     image: samuelmlee/capitalcompass-users:v0.1
     volumes:
-      - ~/.aws:~/.aws
+      - C:/Users/sam_m/.aws:/home/cnb/.aws:ro
     ports:
       - "8085:8085"
 
