@@ -9,4 +9,16 @@ services:
       - C:/Users/sam_m/.aws:/home/cnb/.aws:ro
     ports:
       - "8085:8085"
+  stocks:
+    image: samuelmlee/capitalcompass-stocks:v0.1
+    volumes:
+      - C:/Users/sam_m/.aws:/home/cnb/.aws:ro
+    ports:
+      - "8083:8083"
+  gateway:
+    image: samuelmlee/capitalcompass-gateway:v0.1
+    volumes:
+      - C:/Users/sam_m/.aws:/home/cnb/.aws:ro
+    ports:
+      - "8082:8082"
 
