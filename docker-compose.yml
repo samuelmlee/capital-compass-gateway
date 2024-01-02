@@ -4,6 +4,8 @@ services:
     ports:
       - "8010:8010"
   users:
+    depends_on:
+      - eureka-server
     image: samuelmlee/capitalcompass-users:v0.1
     volumes:
       - C:/Users/sam_m/.aws:/home/cnb/.aws:ro
@@ -12,6 +14,8 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=docker
   stocks:
+    depends_on:
+      - eureka-server
     image: samuelmlee/capitalcompass-stocks:v0.1
     volumes:
       - C:/Users/sam_m/.aws:/home/cnb/.aws:ro
@@ -20,6 +24,8 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=docker
   gateway:
+    depends_on:
+      - eureka-server
     image: samuelmlee/capitalcompass-gateway:v0.1
     volumes:
       - C:/Users/sam_m/.aws:/home/cnb/.aws:ro
