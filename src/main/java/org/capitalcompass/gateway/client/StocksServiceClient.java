@@ -3,6 +3,7 @@ package org.capitalcompass.gateway.client;
 import lombok.RequiredArgsConstructor;
 import org.capitalcompass.gateway.dto.TickerSnapshotMapDTO;
 import org.capitalcompass.gateway.exception.StocksClientErrorException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -19,9 +20,12 @@ public class StocksServiceClient {
 
     private final WebClient.Builder webClientBuilder;
 
-    private String TICKERS_SNAPSHOT_PATH = "http://stocks/v1/stocks/market/snapshot/tickers";
+    @Value("${stock.service.uri}")
+    private String stockServiceUri;
 
     public Mono<TickerSnapshotMapDTO> getTickerSnapShotMap(Set<String> tickerSymbols) {
+        String TICKERS_SNAPSHOT_PATH = stockServiceUri + "/v1/stocks/market/snapshot/tickers";
+
         URI uri = UriComponentsBuilder.fromHttpUrl(TICKERS_SNAPSHOT_PATH).path("/map")
                 .queryParam("symbols", String.join(",", tickerSymbols))
                 .build().toUri();

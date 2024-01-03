@@ -3,6 +3,7 @@ package org.capitalcompass.gateway.client;
 import lombok.RequiredArgsConstructor;
 import org.capitalcompass.gateway.exception.UsersClientErrorException;
 import org.capitalcompass.gateway.model.Watchlist;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -16,9 +17,12 @@ public class UsersServiceClient {
 
     private final WebClient.Builder webClientBuilder;
 
-    private String WATCHLIST_PATH = "http://users/v1/users/watchlists";
+    @Value("${user.service.uri}")
+    private String userServiceUri;
+
 
     public Flux<Watchlist> getUserWatchlists() {
+        String WATCHLIST_PATH = userServiceUri + "/v1/users/watchlists";
 
         return webClientBuilder.build().get().uri(WATCHLIST_PATH)
                 .accept(MediaType.APPLICATION_JSON)
