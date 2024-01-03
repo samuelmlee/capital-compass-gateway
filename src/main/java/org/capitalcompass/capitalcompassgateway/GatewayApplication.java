@@ -6,9 +6,9 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 @EnableEurekaClient
 @SpringBootApplication
-public class CapitalCompassGatewayApplication {
+public class GatewayApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(CapitalCompassGatewayApplication.class, args);
+        SpringApplication.run(GatewayApplication.class, args);
     }
 }
