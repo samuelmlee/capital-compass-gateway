@@ -1,4 +1,4 @@
-package org.capitalcompass.capitalcompassgateway.model;
+package org.capitalcompass.gateway.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,12 +9,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TickerSnapshot {
-
+public class TickerSnapshotDTO {
     private Long updated;
     private String symbol;
     private String name;
     private DailyBar day;
     private DailyBar prevDay;
-
 }

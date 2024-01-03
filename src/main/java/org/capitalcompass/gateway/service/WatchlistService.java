@@ -1,13 +1,13 @@
-package org.capitalcompass.capitalcompassgateway.service;
+package org.capitalcompass.gateway.service;
 
 import lombok.RequiredArgsConstructor;
-import org.capitalcompass.capitalcompassgateway.client.StocksServiceClient;
-import org.capitalcompass.capitalcompassgateway.client.UsersServiceClient;
-import org.capitalcompass.capitalcompassgateway.dto.TickerSnapshotMapDTO;
-import org.capitalcompass.capitalcompassgateway.model.TickerSnapshotDTO;
-import org.capitalcompass.capitalcompassgateway.model.Watchlist;
-import org.capitalcompass.capitalcompassgateway.model.WatchlistDTO;
-import org.capitalcompass.capitalcompassgateway.model.WatchlistTicker;
+import org.capitalcompass.gateway.client.StocksServiceClient;
+import org.capitalcompass.gateway.client.UsersServiceClient;
+import org.capitalcompass.gateway.dto.TickerSnapshotMapDTO;
+import org.capitalcompass.gateway.model.TickerSnapshotDTO;
+import org.capitalcompass.gateway.model.Watchlist;
+import org.capitalcompass.gateway.model.WatchlistDTO;
+import org.capitalcompass.gateway.model.WatchlistTicker;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

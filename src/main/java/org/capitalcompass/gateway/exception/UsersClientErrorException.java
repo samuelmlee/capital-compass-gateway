@@ -1,4 +1,4 @@
-package org.capitalcompass.capitalcompassgateway.exception;
+package org.capitalcompass.gateway.exception;
 
 public class UsersClientErrorException extends RuntimeException {
 

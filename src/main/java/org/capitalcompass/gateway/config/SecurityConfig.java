@@ -1,4 +1,4 @@
-package org.capitalcompass.capitalcompassgateway.config;
+package org.capitalcompass.gateway.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;

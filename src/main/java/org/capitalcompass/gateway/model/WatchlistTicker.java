@@ -1,4 +1,4 @@
-package org.capitalcompass.capitalcompassgateway.model;
+package org.capitalcompass.gateway.model;
 
 import lombok.Data;
 

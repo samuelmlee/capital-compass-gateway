@@ -1,10 +1,10 @@
-package org.capitalcompass.capitalcompassgateway.dto;
+package org.capitalcompass.gateway.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.capitalcompass.capitalcompassgateway.model.TickerSnapshotDTO;
+import org.capitalcompass.gateway.model.TickerSnapshotDTO;
 
 import java.util.Map;
 

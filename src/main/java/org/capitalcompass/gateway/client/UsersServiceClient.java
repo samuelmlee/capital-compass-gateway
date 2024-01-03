@@ -1,8 +1,8 @@
-package org.capitalcompass.capitalcompassgateway.client;
+package org.capitalcompass.gateway.client;
 
 import lombok.RequiredArgsConstructor;
-import org.capitalcompass.capitalcompassgateway.exception.UsersClientErrorException;
-import org.capitalcompass.capitalcompassgateway.model.Watchlist;
+import org.capitalcompass.gateway.exception.UsersClientErrorException;
+import org.capitalcompass.gateway.model.Watchlist;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;

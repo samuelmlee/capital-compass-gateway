@@ -1,7 +1,7 @@
-package org.capitalcompass.capitalcompassgateway.controller;
+package org.capitalcompass.gateway.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.capitalcompass.capitalcompassgateway.model.User;
+import org.capitalcompass.gateway.model.User;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.client.registration.ReactiveClientRegistrationRepository;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;

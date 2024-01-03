@@ -1,8 +1,8 @@
-package org.capitalcompass.capitalcompassgateway.client;
+package org.capitalcompass.gateway.client;
 
 import lombok.RequiredArgsConstructor;
-import org.capitalcompass.capitalcompassgateway.dto.TickerSnapshotMapDTO;
-import org.capitalcompass.capitalcompassgateway.exception.StocksClientErrorException;
+import org.capitalcompass.gateway.dto.TickerSnapshotMapDTO;
+import org.capitalcompass.gateway.exception.StocksClientErrorException;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;

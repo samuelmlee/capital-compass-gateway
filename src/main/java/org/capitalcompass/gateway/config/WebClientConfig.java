@@ -1,4 +1,4 @@
-package org.capitalcompass.capitalcompassgateway.config;
+package org.capitalcompass.gateway.config;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
