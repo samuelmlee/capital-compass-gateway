@@ -86,13 +86,6 @@ management:
     #    port: 6379
     #    timeout: 1s
 
-#eureka:
-#  client:
-#    service-url:
-#      defaultZone: ${eureka.default.zone}
-#    instance:
-#      instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
-
   #logging:
   #  level:
   #    org.springframework.security: TRACE
