@@ -1,5 +1,10 @@
 server:
-  port: 8082
+  ssl:
+    key-store: ${key.store.path:classpath:keystore.p12}
+    key-store-password: ${key.store.password:password}
+    key-store-type: pkcs12
+    key-alias: capitalcompass
+  port: 8443
 
 spring:
   application:
