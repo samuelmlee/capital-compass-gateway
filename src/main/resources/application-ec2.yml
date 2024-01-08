@@ -1,0 +1,4 @@
+spring:
+  config:
+    import:
+      - aws-secretsmanager:/secret/api-gateway_ec2/
