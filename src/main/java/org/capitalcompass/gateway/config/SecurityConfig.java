@@ -23,7 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    @Value("${frontend.url}")
+    @Value("${webapp.url}")
     private String webAppUrl;
 
     @Bean
