@@ -23,8 +23,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    @Value("${webapp.url}")
-    private String webAppUrl;
+    @Value("${ui.url}")
+    private String uiUrl;
 
     @Bean
     SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
@@ -38,14 +38,14 @@ public class SecurityConfig {
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .authenticationEntryPoint(new HttpStatusServerEntryPoint(HttpStatus.UNAUTHORIZED)))
                 .oauth2Login(oauth2Login -> oauth2Login
-                        .authenticationSuccessHandler(new RedirectServerAuthenticationSuccessHandler(webAppUrl)))
+                        .authenticationSuccessHandler(new RedirectServerAuthenticationSuccessHandler(uiUrl)))
                 .build();
     }
 
     private CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowCredentials(true);
-        configuration.setAllowedOrigins(List.of(webAppUrl));
+        configuration.setAllowedOrigins(List.of(uiUrl));
         configuration.setAllowedMethods(Collections.singletonList("*"));
         configuration.setAllowedHeaders(Collections.singletonList("*"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

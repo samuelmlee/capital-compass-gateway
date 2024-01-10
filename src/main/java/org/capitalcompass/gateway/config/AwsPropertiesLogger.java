@@ -16,8 +16,8 @@ public class AwsPropertiesLogger implements ApplicationListener<ContextRefreshed
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        String webAppUrl = env.getProperty("webapp.url");
+        String uiUrl = env.getProperty("ui.url");
 
-        log.info("webapp.url: {}", webAppUrl);
+        log.info("ui.url: {}", uiUrl);
     }
 }
