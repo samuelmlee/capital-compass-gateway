@@ -20,4 +20,10 @@ public class CustomReactiveErrorHandling {
         log.error(ex.getMessage(), ex);
         return ResponseEntity.internalServerError().body(ex.getMessage());
     }
+
+    @ExceptionHandler(KeycloakClientErrorException.class)
+    public ResponseEntity<String> handleKeycloakClientErrorException(KeycloakClientErrorException ex) {
+        log.error(ex.getMessage(), ex);
+        return ResponseEntity.internalServerError().body(ex.getMessage());
+    }
 }

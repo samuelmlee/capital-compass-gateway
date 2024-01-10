@@ -1,11 +1,11 @@
-package org.capitalcompass.gateway.api;
+package org.capitalcompass.gateway.dto;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data
-public class KeycloakUser {
-
-    private Object createdTimestamp;
+@Builder
+public class UserDTO {
     private String username;
     private Boolean enabled;
     private String email;

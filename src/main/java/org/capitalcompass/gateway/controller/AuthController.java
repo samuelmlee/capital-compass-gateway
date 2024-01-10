@@ -7,6 +7,7 @@ import org.springframework.security.oauth2.client.registration.ReactiveClientReg
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.WebSession;
 import reactor.core.publisher.Mono;
@@ -16,11 +17,12 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("v1/auth")
 public class AuthController {
 
     private final ReactiveClientRegistrationRepository clientRegistrationRepository;
 
-    @GetMapping("v1/auth/user")
+    @GetMapping("/user")
     public Mono<User> getUser(@AuthenticationPrincipal OidcUser oidcUser) {
         User currentUser = User.builder()
                 .username(oidcUser.getName())
@@ -32,7 +34,7 @@ public class AuthController {
         return Mono.just(currentUser);
     }
 
-    @GetMapping("v1/auth/logout")
+    @GetMapping("/logout")
     public Mono<Map<String, String>> logout(@AuthenticationPrincipal(expression = "idToken") OidcIdToken idToken, WebSession session) {
         return session.invalidate().then(clientRegistrationRepository.findByRegistrationId("keycloak")
                 .flatMap(registration -> {
