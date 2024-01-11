@@ -20,6 +20,9 @@ spring:
       namespace: capitalcompass:gateway
   security:
     oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${keycloak.issuer.uri}
       client:
         registration:
           keycloak:
