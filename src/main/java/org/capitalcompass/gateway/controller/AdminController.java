@@ -1,7 +1,7 @@
 package org.capitalcompass.gateway.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.capitalcompass.gateway.dto.UserDTO;
+import org.capitalcompass.gateway.dto.AdminUserDTO;
 import org.capitalcompass.gateway.service.KeycloakAdminService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +16,7 @@ public class AdminController {
     private final KeycloakAdminService keycloakAdminService;
 
     @GetMapping("/users")
-    public Flux<UserDTO> getAllUsers() {
+    public Flux<AdminUserDTO> getAllUsers() {
         return keycloakAdminService.getUsers();
     }
 }

@@ -3,10 +3,14 @@ package org.capitalcompass.gateway.dto;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @Builder
 public class UserDTO {
-    private String username;
-    private Boolean enabled;
-    private String email;
+    String username;
+    String firstName;
+    String lastName;
+    String email;
+    List<String> roles;
 }

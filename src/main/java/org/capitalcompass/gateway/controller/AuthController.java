@@ -1,7 +1,7 @@
 package org.capitalcompass.gateway.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.capitalcompass.gateway.model.User;
+import org.capitalcompass.gateway.dto.UserDTO;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.client.registration.ReactiveClientRegistrationRepository;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
@@ -23,15 +23,15 @@ public class AuthController {
     private final ReactiveClientRegistrationRepository clientRegistrationRepository;
 
     @GetMapping("/user")
-    public Mono<User> getUser(@AuthenticationPrincipal OidcUser oidcUser) {
-        User currentUser = User.builder()
+    public Mono<UserDTO> getUser(@AuthenticationPrincipal OidcUser oidcUser) {
+        UserDTO currentUserDTO = UserDTO.builder()
                 .username(oidcUser.getName())
                 .firstName(oidcUser.getGivenName())
                 .lastName(oidcUser.getFamilyName())
                 .email(oidcUser.getEmail())
                 .roles(oidcUser.getClaimAsStringList("roles"))
                 .build();
-        return Mono.just(currentUser);
+        return Mono.just(currentUserDTO);
     }
 
     @GetMapping("/logout")

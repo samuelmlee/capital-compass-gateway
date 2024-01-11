@@ -17,7 +17,9 @@ public class AwsPropertiesLogger implements ApplicationListener<ContextRefreshed
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         String uiUrl = env.getProperty("ui.url");
+        String keycloakBaseUrl = env.getProperty("keycloak.base.url");
 
         log.info("ui.url: {}", uiUrl);
+        log.info("keycloak.base.url: {}", keycloakBaseUrl);
     }
 }

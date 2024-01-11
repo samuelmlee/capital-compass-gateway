@@ -1,9 +1,10 @@
-package org.capitalcompass.gateway.model;
+package org.capitalcompass.gateway.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.capitalcompass.gateway.model.DailyBar;
 
 @Data
 @Builder
