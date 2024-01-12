@@ -46,7 +46,8 @@ public class SecurityConfig {
         return http.cors().configurationSource(corsConfigurationSource()).and().csrf().disable()
                 .authorizeExchange(exchange -> exchange
                         .pathMatchers(HttpMethod.OPTIONS).permitAll()
-                        .pathMatchers("/v1/users/**", "/v1/stocks/**", "/actuator/**").permitAll()
+                        .pathMatchers("/v1/users/**", "/v1/stocks/**", "/actuator/**",
+                                "/swagger-ui.html", "/v3/api-docs/**", "/webjars/**").permitAll()
                         .pathMatchers("/v1/admin/**").hasRole("ADMIN")
                         .anyExchange().authenticated()
                 )
