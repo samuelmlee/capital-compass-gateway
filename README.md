@@ -14,6 +14,7 @@ User Microservice and the Stock Microservice. Utilizing Keycloak for secure auth
 - Keycloak server setup for authentication
 - Access to AWS Parameter Store and AWS Secrets Manager
 - Access to all microservices (User and Stock services)
+- Running instance of Redis exposing port 6379
 
 **Steps:**
 
@@ -28,6 +29,7 @@ User Microservice and the Stock Microservice. Utilizing Keycloak for secure auth
 - **Java**: Version 11
 - **Gradle**: For dependency management and project building
 - **Keycloak**: For OAuth2 and OpenID Connect based authentication
+- **Redis**: For storing OAuth2 Access Tokens
 
 ## Dependencies / Libraries
 
@@ -61,7 +63,10 @@ The Spring Cloud Gateway is configured as Spring OAuth2 client for Oauth2 Login,
 other micro services.
 
 The Gateway stores OAuth 2 Access Tokens for each user and set the Session Id as Http Only cookie in the browser.
-Ensure the Frontend is sending credentials before making requests.
+
+To start the Oauth2 authorization flow, the Frontend should route to {gateway url}/oauth2/authorization/keycloak
+
+Ensure the Frontend is sending credentials before making requests requiring authentication.
 
 ## Release History
 
