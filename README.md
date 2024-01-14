@@ -62,7 +62,7 @@ Most requests to the API Gateway require authentication via Keycloak.
 The Spring Cloud Gateway is configured as Spring OAuth2 client for Oauth2 Login, it also acts as Token Relay to the
 other micro services.
 
-The Gateway stores OAuth 2 Access Tokens for each user and set the Session Id as Http Only cookie in the browser.
+The Gateway stores OAuth 2 Access Tokens for each user and sets the Session Id as Http Only cookie in the browser.
 
 To start the Oauth2 authorization flow, the Frontend should route to {gateway url}/oauth2/authorization/keycloak
 
