@@ -14,6 +14,10 @@ import reactor.core.publisher.Mono;
 import java.net.URI;
 import java.util.Set;
 
+/**
+ * Client class for interfacing with the Stocks Service.
+ * Provides methods to communicate with the Stocks Service for operations such as retrieving ticker snapshots.
+ */
 @Component
 @RequiredArgsConstructor
 public class StocksServiceClient {
@@ -23,6 +27,14 @@ public class StocksServiceClient {
     @Value("${stock.service.uri}")
     private String stockServiceUri;
 
+    /**
+     * Retrieves a map of ticker snapshots for the given set of ticker symbols.
+     * Communicates with the Stocks Service to obtain the snapshot data.
+     *
+     * @param tickerSymbols A set of ticker symbols to retrieve the snapshot map for.
+     * @return A Mono of TickerSnapshotMapDTO containing a map of ticker symbols to their snapshot data.
+     * @throws StocksClientErrorException for errors during the request or handling the response.
+     */
     public Mono<TickerSnapshotMapDTO> getTickerSnapShotMap(Set<String> tickerSymbols) {
         String TICKERS_SNAPSHOT_PATH = stockServiceUri + "/v1/stocks/market/snapshot/tickers";
 

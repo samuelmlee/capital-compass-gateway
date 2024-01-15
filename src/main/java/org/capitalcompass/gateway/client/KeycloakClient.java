@@ -15,6 +15,9 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+/**
+ * Client for interfacing with Keycloak for authentication and user management.
+ */
 @Component
 @RequiredArgsConstructor
 public class KeycloakClient {
@@ -28,10 +31,20 @@ public class KeycloakClient {
     private String clientSecret;
 
 
+    /**
+     * Default constructor initializes the WebClient used for HTTP requests to Keycloak.
+     */
     public KeycloakClient() {
         webClient = WebClient.builder().build();
     }
 
+    /**
+     * Retrieves an access token from Keycloak for client authentication.
+     * The access token is used for authenticating subsequent requests.
+     *
+     * @return A Mono of KeycloakTokenResponse containing the access token and token information.
+     * @throws KeycloakClientErrorException for errors during the request or handling the response.
+     */
     public Mono<KeycloakTokenResponse> getAccessToken() {
         return webClient.post()
                 .uri(keycloakBaseUrl + "/realms/" + realm + "/protocol/openid-connect/token")
@@ -49,6 +62,14 @@ public class KeycloakClient {
                 );
     }
 
+    /**
+     * Retrieves a list of users from Keycloak.
+     * The request requires an access token for authorization.
+     *
+     * @param accessToken The access token to authenticate the request to Keycloak.
+     * @return A Flux of KeycloakUser containing details of the users.
+     * @throws KeycloakClientErrorException for errors during the request or handling the response.
+     */
     public Flux<KeycloakUser> getUsers(String accessToken) {
         return webClient.get()
                 .uri(keycloakBaseUrl + "/admin/realms/" + realm + "/users")

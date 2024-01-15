@@ -15,6 +15,9 @@ import reactor.core.publisher.Mono;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * REST controller for authentication related operations.
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("v1/auth")
@@ -22,6 +25,12 @@ public class AuthController {
 
     private final ReactiveClientRegistrationRepository clientRegistrationRepository;
 
+    /**
+     * Retrieves the details of the currently authenticated user.
+     *
+     * @param oidcUser The authenticated OIDC user provided by Spring Security.
+     * @return A Mono of UserDTO containing the user's details.
+     */
     @GetMapping("/user")
     public Mono<UserDTO> getUser(@AuthenticationPrincipal OidcUser oidcUser) {
         UserDTO currentUserDTO = UserDTO.builder()
@@ -34,6 +43,14 @@ public class AuthController {
         return Mono.just(currentUserDTO);
     }
 
+    /**
+     * Handles the logout process for the authenticated user.
+     * Invalidates the current web session and provides the keycloak logout URL and ID token.
+     *
+     * @param idToken The keycloak ID token of the authenticated user.
+     * @param session The current web session.
+     * @return A Mono of a Map containing the logout URL and ID token for the user.
+     */
     @GetMapping("/logout")
     public Mono<Map<String, String>> logout(@AuthenticationPrincipal(expression = "idToken") OidcIdToken idToken, WebSession session) {
         return session.invalidate().then(clientRegistrationRepository.findByRegistrationId("keycloak")

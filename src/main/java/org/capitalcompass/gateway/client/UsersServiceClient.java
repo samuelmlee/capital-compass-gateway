@@ -11,6 +11,10 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+/**
+ * Client class for interfacing with the Users Service.
+ * Provides methods to communicate with the Users Service for operations such as retrieving user watch lists.
+ */
 @Component
 @RequiredArgsConstructor
 public class UsersServiceClient {
@@ -20,7 +24,12 @@ public class UsersServiceClient {
     @Value("${user.service.uri}")
     private String userServiceUri;
 
-
+    /**
+     * Retrieves all watch lists for the currently authenticated user from User Service.
+     *
+     * @return A Flux of Watchlist containing the watchlist data for the user.
+     * @throws UsersClientErrorException for errors during the request or handling the response.
+     */
     public Flux<Watchlist> getUserWatchlists() {
         String WATCHLIST_PATH = userServiceUri + "/v1/users/watchlists";
 
