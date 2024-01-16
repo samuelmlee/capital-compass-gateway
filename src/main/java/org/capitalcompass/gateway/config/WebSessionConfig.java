@@ -16,11 +16,14 @@ public class WebSessionConfig {
     @Value("${redis.host}")
     private String redisHost;
 
+    @Value("${redis.port}")
+    private Integer redisPort;
+
     @Bean
     public LettuceConnectionFactory redisConnectionFactory() {
         RedisStandaloneConfiguration redisConfig = new RedisStandaloneConfiguration();
         redisConfig.setHostName(redisHost);
-        redisConfig.setPort(6379);
+        redisConfig.setPort(redisPort);
         return new LettuceConnectionFactory(redisConfig);
     }
 
@@ -28,7 +31,7 @@ public class WebSessionConfig {
     public WebSessionIdResolver webSessionIdResolver() {
         CookieWebSessionIdResolver resolver = new CookieWebSessionIdResolver();
         resolver.addCookieInitializer((builder) ->
-            builder.sameSite("None").secure(true)
+                builder.sameSite("None").secure(true)
         );
         return resolver;
     }

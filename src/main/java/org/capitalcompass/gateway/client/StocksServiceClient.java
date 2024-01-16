@@ -36,9 +36,8 @@ public class StocksServiceClient {
      * @throws StocksClientErrorException for errors during the request or handling the response.
      */
     public Mono<TickerSnapshotMapDTO> getTickerSnapShotMap(Set<String> tickerSymbols) {
-        String TICKERS_SNAPSHOT_PATH = stockServiceUri + "/v1/stocks/market/snapshot/tickers";
 
-        URI uri = UriComponentsBuilder.fromHttpUrl(TICKERS_SNAPSHOT_PATH).path("/map")
+        URI uri = UriComponentsBuilder.fromHttpUrl(stockServiceUri).path("/v1/stocks/market/snapshot/tickers/map")
                 .queryParam("symbols", String.join(",", tickerSymbols))
                 .build().toUri();
 

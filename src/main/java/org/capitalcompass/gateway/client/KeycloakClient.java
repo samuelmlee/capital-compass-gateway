@@ -23,12 +23,18 @@ import reactor.core.publisher.Mono;
 public class KeycloakClient {
 
     private final WebClient webClient;
-    private final String realm = "capitalcompass";
-    private final String clientId = "keycloak-admin-client";
-    @Value("${keycloak.base.url}")
+
+    @Value("${keycloak-admin-client.id}")
+    private String keycloakClientId;
+
+    @Value("${keycloak.realm}")
+    private String keycloakRealm;
+
+    @Value("${keycloak.base-url}")
     private String keycloakBaseUrl;
-    @Value("${keycloak.adminclient.secret}")
-    private String clientSecret;
+
+    @Value("${keycloak.admin-client.secret}")
+    private String keycloakClientSecret;
 
 
     /**
@@ -47,10 +53,10 @@ public class KeycloakClient {
      */
     public Mono<KeycloakTokenResponse> getAccessToken() {
         return webClient.post()
-                .uri(keycloakBaseUrl + "/realms/" + realm + "/protocol/openid-connect/token")
+                .uri(keycloakBaseUrl + "/realms/" + keycloakRealm + "/protocol/openid-connect/token")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .body(BodyInserters.fromFormData("client_id", clientId)
-                        .with("client_secret", clientSecret)
+                .body(BodyInserters.fromFormData("client_id", keycloakClientId)
+                        .with("client_secret", keycloakClientSecret)
                         .with("grant_type", "client_credentials"))
                 .retrieve()
                 .bodyToMono(KeycloakTokenResponse.class)
@@ -72,7 +78,7 @@ public class KeycloakClient {
      */
     public Flux<KeycloakUser> getUsers(String accessToken) {
         return webClient.get()
-                .uri(keycloakBaseUrl + "/admin/realms/" + realm + "/users")
+                .uri(keycloakBaseUrl + "/admin/realms/" + keycloakRealm + "/users")
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
                 .retrieve()
                 .bodyToFlux(new ParameterizedTypeReference<KeycloakUser>() {
