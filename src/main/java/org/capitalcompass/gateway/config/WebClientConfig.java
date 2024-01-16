@@ -10,6 +10,8 @@ import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.util.Objects;
+
 @Configuration
 @Log4j2
 public class WebClientConfig {
@@ -34,7 +36,11 @@ public class WebClientConfig {
                 sb.append(clientRequest.url()).append("\n");
                 clientRequest
                         .headers()
-                        .forEach((name, values) -> values.forEach(sb::append));
+                        .forEach((name, values) -> {
+                            if (!Objects.equals(name, "Authorization")) {
+                                values.forEach(sb::append);
+                            }
+                        });
                 log.debug(sb.toString());
             }
             return Mono.just(clientRequest);
