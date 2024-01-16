@@ -30,10 +30,9 @@ public class UsersServiceClient {
      * @return A Flux of Watchlist containing the watchlist data for the user.
      * @throws UsersClientErrorException for errors during the request or handling the response.
      */
-    public Flux<Watchlist> getUserWatchlists() {
-        String WATCHLIST_PATH = userServiceUri + "/v1/users/watchlists";
+    public Flux<Watchlist> getUserWatchLists() {
 
-        return webClientBuilder.build().get().uri(WATCHLIST_PATH)
+        return webClientBuilder.build().get().uri(userServiceUri + "/v1/users/watchlists")
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve().bodyToFlux(Watchlist.class)
                 .onErrorResume(WebClientResponseException.class, ex ->

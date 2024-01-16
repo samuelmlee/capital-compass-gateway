@@ -35,7 +35,7 @@ public class WatchlistService {
      * @return A Flux of WatchlistDTO containing details of watch lists and their ticker snapshots.
      */
     public Flux<WatchlistDTO> getWatchListsWithSnapshots() {
-        return usersServiceClient.getUserWatchlists().collectList().flatMapMany(watchlists -> {
+        return usersServiceClient.getUserWatchLists().collectList().flatMapMany(watchlists -> {
 
             Set<String> allTickerSymbols = getAllWatchlistsSymbols(watchlists);
 
