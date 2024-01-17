@@ -54,6 +54,11 @@ spring:
           predicates:
             - Path=/v1/users/watchlists/{watchlistId}
             - Method=DELETE
+        - id: users-get-all-users
+          uri: ${user.service.uri}
+          predicates:
+            - Path=/v1/users/admin-users
+            - Method=GET
         - id: stocks-tickers
           uri: ${stock.service.uri}
           predicates:
