@@ -79,6 +79,11 @@ spring:
           predicates:
             - Path=/v1/stocks/reference/tickers/details/{ticker}
             - Method=GET
+        - id: stocks-tickers-news
+          uri: ${stock.service.uri}
+          predicates:
+            - Path=/v1/stocks/reference/tickers/news
+            - Method=GET
 
 management:
   endpoints:
