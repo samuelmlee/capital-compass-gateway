@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -36,8 +37,15 @@ public class WatchlistService {
      */
     public Flux<WatchlistDTO> getWatchListsWithSnapshots() {
         return usersServiceClient.getUserWatchLists().collectList().flatMapMany(watchlists -> {
+            if (watchlists.isEmpty()) {
+                return Flux.empty();
+            }
 
             Set<String> allTickerSymbols = getAllWatchlistsSymbols(watchlists);
+
+            if (allTickerSymbols.isEmpty()) {
+                return Flux.fromIterable(watchlists).flatMap(watchlist -> buildWatchlistWithSnapshot(watchlist, Collections.emptyList()));
+            }
 
             return stocksServiceClient.getTickerSnapShotMap(allTickerSymbols).flatMapMany(snapshotsMap ->
                     Flux.fromIterable(watchlists).flatMap(watchlist -> {
@@ -99,7 +107,7 @@ public class WatchlistService {
      * @return A set of all ticker symbols contained in all the watchlists.
      */
     private Set<String> getAllWatchlistsSymbols(List<Watchlist> watchlists) {
-        return watchlists.stream()
+        return watchlists.stream().filter(watchlist -> !watchlist.getTickers().isEmpty())
                 .flatMap(watchlist -> watchlist.getTickers().stream())
                 .map(WatchlistTicker::getSymbol).collect(Collectors.toSet());
     }
