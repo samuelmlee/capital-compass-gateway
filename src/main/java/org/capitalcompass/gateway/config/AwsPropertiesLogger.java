@@ -19,7 +19,7 @@ public class AwsPropertiesLogger implements ApplicationListener<ContextRefreshed
         String webAppUrl = env.getProperty("web-app-url");
         String keycloakBaseUrl = env.getProperty("keycloak.base-url");
 
-        log.info("webapp-url: {}", webAppUrl);
-        log.info("keycloak.base-url: {}", keycloakBaseUrl);
+        log.debug("webapp-url: {}", webAppUrl);
+        log.debug("keycloak.base-url: {}", keycloakBaseUrl);
     }
 }
