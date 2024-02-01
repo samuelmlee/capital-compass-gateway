@@ -84,6 +84,10 @@ spring:
           predicates:
             - Path=/v1/stocks/reference/tickers/news
             - Method=GET
+        - id: stocks-web-socket
+          uri: ws://localhost:8083
+          predicates:
+            - Path=/ws/**
 
 management:
   endpoints:
