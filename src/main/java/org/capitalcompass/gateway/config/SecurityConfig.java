@@ -35,7 +35,7 @@ public class SecurityConfig {
         return http.cors().configurationSource(corsConfigurationSource()).and().csrf().disable()
                 .authorizeExchange(exchange -> exchange
                         .pathMatchers(HttpMethod.OPTIONS).permitAll()
-                        .pathMatchers("/v1/users/**", "/v1/stocks/**", "/actuator/**",
+                        .pathMatchers("/v1/users/**", "/v1/stocks/**", "/ws/**", "/actuator/**",
                                 "/swagger-ui.html", "/v3/api-docs/**", "/webjars/**").permitAll()
                         .anyExchange().authenticated()
                 )
