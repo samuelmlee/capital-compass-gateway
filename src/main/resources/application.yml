@@ -85,7 +85,7 @@ spring:
             - Path=/v1/stocks/reference/tickers/news
             - Method=GET
         - id: stocks-web-socket
-          uri: ws://localhost:8083/rsocket
+          uri: ${stock.service.websocket-uri}
           predicates:
             - Path=/rsocket/**
 
