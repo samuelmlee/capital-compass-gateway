@@ -1,7 +1,7 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '2.7.17'
-    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id 'org.springframework.boot' version '3.2.7'
+    id 'io.spring.dependency-management' version '1.1.6'
     id 'jacoco'
 }
 
@@ -9,7 +9,7 @@ group = 'org.capitalcompass'
 version = '0.0.1'
 
 java {
-    sourceCompatibility = '11'
+    sourceCompatibility = '17'
 }
 
 jar {
@@ -23,12 +23,13 @@ repositories {
 }
 
 ext {
-    set('springCloudVersion', "2021.0.8")
+    set('springCloudVersion', "2023.0.3")
     set('testcontainersVersion', "1.17.3")
 }
 
 dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
+    
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
@@ -60,6 +61,10 @@ dependencyManagement {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs.add("-parameters")
 }
 
 task buildImageScript(type: Exec) {
