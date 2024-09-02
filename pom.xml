@@ -102,7 +102,6 @@
 						<goals>
 							<goal>compact-image</goal>
 						</goals>
-						<phase>package</phase>
 					</execution>
 				</executions>
 			</plugin>
